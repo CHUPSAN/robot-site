@@ -59,15 +59,19 @@
         </div>
     </section>
 
-    <!-- ГАЛЕРЕЯ -->
+        <!-- ГАЛЕРЕЯ -->
     <section id="gallery" class="section">
         <div class="container">
             <h2>Галерея проекта</h2>
             <div class="gallery-grid">
-                <img src="https://via.placeholder.com/400x300?text=Фото+1" alt="Фото робота 1">
-                <img src="https://via.placeholder.com/400x300?text=Фото+2" alt="Фото робота 2">
-                <img src="https://via.placeholder.com/400x300?text=Фото+3" alt="Фото робота 3">
-                <img src="https://via.placeholder.com/400x300?text=Фото+4" alt="Фото робота 4">
+                
+                <img src="images/1.jpg" alt="Фото робота 1" class="gallery-item" data-type="image">
+                <img src="images/2.jpg" alt="Фото робота 2" class="gallery-item" data-type="image">
+                <img src="images/3.jpg" alt="Фото робота 3" class="gallery-item" data-type="image">
+
+                <video src="images/3д модель.mp4" class="gallery-item video-wide" data-type="video" playsinline loop autoplay muted></video>
+
+                <p class="video-caption">Концепция работы робота-укладчика БРУ-30 на линии упаковки</p>
             </div>
         </div>
     </section>
@@ -93,6 +97,69 @@
             </p>
         </div>
     </footer>
+
+        <!-- МОДАЛЬНОЕ ОКНО (ЛАЙТБОКС) -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content" id="lightbox-content"></div>
+    </div>
+    
+        <!-- СКРИПТ ДЛЯ ГАЛЕРЕИ -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightbox-content');
+            const closeBtn = document.querySelector('.lightbox-close');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            // Открытие при клике
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    const src = this.getAttribute('src');
+
+                    // Очищаем окно перед добавлением нового элемента
+                    lightboxContent.innerHTML = '';
+
+                    if (type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = src;
+                        lightboxContent.appendChild(img);
+                    } else if (type === 'video') {
+                        const video = document.createElement('video');
+                        video.src = src;
+                        video.controls = true; // Включаем кнопки управления
+                        video.autoplay = true; // Запускаем сразу в большом окне
+                        lightboxContent.appendChild(video);
+                    }
+
+                    lightbox.classList.add('active');
+                });
+            });
+
+            // Закрытие по крестику
+            closeBtn.addEventListener('click', function() {
+                lightbox.classList.remove('active');
+                lightboxContent.innerHTML = ''; // Останавливаем видео при закрытии
+            });
+
+            // Закрытие по клику на темный фон
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                    lightboxContent.innerHTML = '';
+                }
+            });
+            
+            // Закрытие по нажатию на Esc
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                    lightboxContent.innerHTML = '';
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
