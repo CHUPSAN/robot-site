@@ -206,25 +206,59 @@ body {
 /* ===== ГАЛЕРЕЯ ===== */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr); 
     gap: 25px;
     margin-top: 40px;
+    
+    /* ВОТ ГЛАВНЫЕ ИЗМЕНЕНИЯ: */
+    max-width: 1000px; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
-.gallery-grid img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
+/* Общие стили */
+.gallery-grid img,
+.gallery-grid video {
+    width: 100%; /* Внутри сетки элементы занимают всю доступную ширину */
+    object-fit: cover; 
     border-radius: 16px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     transition: all 0.4s;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
+    background-color: #000;
+    cursor: pointer; 
 }
 
-.gallery-grid img:hover {
-    transform: scale(1.03);
+/* Настройки для ТРЕХ ФОТО */
+.gallery-grid img {
+    aspect-ratio: 4 / 3; 
+    display: block;
+}
+
+/* Настройки для ВИДЕО */
+.gallery-grid .video-wide {
+    grid-column: 1 / -1; 
+    aspect-ratio: 16 / 9; 
+    max-height: 500px; 
+}
+
+/* Эффекты при наведении */
+.gallery-grid img:hover,
+.gallery-grid video:hover {
+    transform: scale(1.02);
     border-color: #8f00ff;
     box-shadow: 0 12px 30px rgba(143, 0, 255, 0.2);
+}
+
+/* Стили для подписи под видео */
+.video-caption {
+    grid-column: 1 / -1; /* Подпись растягивается на все 3 колонки */
+    text-align: center;  /* Выравнивание по центру */
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4b0384;      /* Тёмно-фиолетовый цвет из твоей палитры */
+    margin-top: -5px;    /* Чуть приподнимаем, чтобы не было слишком много места */
+    margin-bottom: 20px;
 }
 
 /* ===== ПОДВАЛ ===== */
@@ -294,6 +328,57 @@ body {
     mix-blend-mode: multiply; 
 }
 
+/* ===== МОДАЛЬНОЕ ОКНО (ЛАЙТБОКС) ===== */
+.lightbox {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Темный полупрозрачный фон */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.lightbox-content img,
+.lightbox-content video {
+    max-width: 100%;
+    max-height: 90vh; /* 90% от высоты экрана */
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(143, 0, 255, 0.3); /* Фиолетовое свечение */
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s;
+}
+
+.lightbox-close:hover {
+    color: #fd493d; /* Красный при наведении */
+}
+
 @media (max-width: 768px) {
     .header .container {
         flex-direction: column;
@@ -333,7 +418,10 @@ body {
     .footer-partner img {
         max-height: 120px; /* логотипы в футере на телефоне */
     }
-    .gallery-grid img {
-        height: 200px;
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+       .gallery-grid .video-wide {
+        aspect-ratio: 16 / 9; 
     }
 }
